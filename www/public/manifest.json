@@ -1,0 +1,9 @@
+{
+  "short_name": "Personal Management App",
+  "name": "Personal Management App",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
