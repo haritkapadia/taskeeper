@@ -1,13 +1,14 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import postsRoute from './routes/posts.js'
+import tasksRoute from './routes/tasks.js'
 
 dotenv.config()
 const PORT = process.env.PORT || 8000
 const app = express()
 
-app.use('/tasks', postsRoute);
+app.use(express.json())
+app.use('/tasks', tasksRoute);
 app.get('/test', (_req, res, _err) => res.json({ response: 'Hello World!' }))
 
 app.listen(PORT, async () => {

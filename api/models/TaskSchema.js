@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 const TaskSchema = mongoose.Schema({
     id: {
         type: mongoose.ObjectId,
-        required: true
     },
     name: {
         type: String,
@@ -11,14 +10,15 @@ const TaskSchema = mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true,
         default: false
     },
     category: {
         type: String,
-        required: true,
         default: "My Tasks"
-    }
+    },
+}, {
+    collection: 'Tasks',
+    versionKey: false
 })
 
 export default mongoose.model('Task', TaskSchema, 'Tasks')
