@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const PostSchema = mongoose.Schema({
+const TaskSchema = mongoose.Schema({
     id: {
         type: mongoose.ObjectId,
         required: true
@@ -21,4 +21,4 @@ const PostSchema = mongoose.Schema({
     }
 })
 
-export default mongoose.model('Posts', PostSchema, 'Tasks')
+export default mongoose.model('Task', TaskSchema, 'Tasks')

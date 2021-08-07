@@ -7,7 +7,7 @@ dotenv.config()
 const PORT = process.env.PORT || 8000
 const app = express()
 
-app.use('/posts', postsRoute);
+app.use('/tasks', postsRoute);
 app.get('/test', (_req, res, _err) => res.json({ response: 'Hello World!' }))
 
 app.listen(PORT, async () => {
