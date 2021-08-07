@@ -13,7 +13,12 @@ app.get('/test', (_req, res, _err) => res.json({ response: 'Hello World!' }))
 
 app.listen(PORT, async () => {
     console.log(`Server running on port ${PORT}`)
-    await mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+    await mongoose.connect(process.env.DB_CONNECTION, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    }, () => {
         console.log("Connected to db")
     })
     /*

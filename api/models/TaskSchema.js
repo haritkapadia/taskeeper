@@ -16,6 +16,14 @@ const TaskSchema = mongoose.Schema({
         type: String,
         default: "My Tasks"
     },
+    parent: {
+        type: mongoose.ObjectId,
+        default: null
+    },
+    children: [{
+        type: mongoose.ObjectId,
+        default: null
+    }]
 }, {
     collection: 'Tasks',
     versionKey: false
