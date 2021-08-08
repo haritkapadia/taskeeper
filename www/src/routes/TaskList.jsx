@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import enUS from 'date-fns/locale/en-US'
 import BigCalendar from '../components/BigCalendar/BigCalendar'
+// import NewPopup from '../components/Popup/Popup'
+import EventPopup from '../components/EventPopup/EventPopup'
 import { dateFnsLocalizer } from 'react-big-calendar'
 import format from 'date-fns/format'
 import parse from 'date-fns/parse'
@@ -22,22 +24,36 @@ const localizer = dateFnsLocalizer({
 const tasksToEvents = (tasks) => (
   tasks
     .filter((task) => task.startTime)
-    .map(({ name, datetime, startTime, duration }) => ({
+    .map(({ name, datetime, startTime, duration, ...rest }) => ({
       title: name,
       allDay: !datetime,
       start: new Date(startTime),
-      end: new Date((new Date(startTime)).getTime() + duration)
+      end: new Date((new Date(startTime)).getTime() + duration),
+      ...rest
     }))
 )
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([])
+  const [currentTask, setCurrentTask] = useState(undefined)
+  // const [showNewEvent, setShowNewEvent] = useState(false)
+  const [showEvent, setShowEvent] = useState(false)
 
   useEffect(async () => {
     const tasks = await apiQuery('/tasks')
     console.log(tasks)
     setTasks(tasks)
   }, [])
+
+  const closeEventPopup = () => {
+    setCurrentTask(undefined)
+    setShowEvent(false)
+  }
+
+  const onSelectEvent = (event) => {
+    setCurrentTask(event)
+    setShowEvent(true)
+  }
 
   const onSelectSlot = async ({ start, end, action }) => {
     console.log(start, end, action)
@@ -69,12 +85,15 @@ const TaskList = () => {
           Sidebar goes here eventually
         </div>
         <div style = {{ height: '600px', width: '80%' }}>
-          <BigCalendar
-            localizer={localizer}
-            events={tasksToEvents(tasks)}
-            onSelectEvent={() => {}}
-            onSelectSlot={onSelectSlot}
-          />
+          <>
+            {showEvent ? <EventPopup task={currentTask} tasks={tasks} toggle={closeEventPopup} /> : undefined}
+            <BigCalendar
+              localizer={localizer}
+              events={tasksToEvents(tasks)}
+              onSelectEvent={onSelectEvent}
+              onSelectSlot={onSelectSlot}
+            />
+          </>
         </div>
       </div>
     </div>

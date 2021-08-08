@@ -3,13 +3,12 @@ import React, { useState } from 'react'
 import { Modal, ModalContent } from './styles'
 import { MdClose } from 'react-icons/md'
 
-function Popup ({ toggle, addEvent }) {
+function Popup ({ toggle, onSubmit }) {
   const [task, setTaskName] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(task)
-    toggle(task)
+    onSubmit(task)
   }
 
   function close () {
