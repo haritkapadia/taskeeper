@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styled from 'styled-components'
 import { apiQuery } from '../../util/apiQuery'
+import OutsideClickHandler from 'react-outside-click-handler'
 
 const Heading = styled.input`
   font-size: 36px;
@@ -90,6 +91,9 @@ function Popup ({ toggle, task, tasks, onSave }) {
 
   return (
     <Modal>
+      <OutsideClickHandler
+        onOutsideClick={toggle}
+      >
       <ModalContent>
         <span className='close' onClick={toggle}>
           <MdClose/>
@@ -97,11 +101,11 @@ function Popup ({ toggle, task, tasks, onSave }) {
         <div>
           <Heading type='text' value={edited('title')} onChange={edit('title')} />
           {task.children &&
-           (
-             <ul>
-               {task.children.map(tree)}
-             </ul>
-           )
+          (
+            <ul>
+              {task.children.map(tree)}
+            </ul>
+          )
           }
           { (getHours(task.end) !== 0 || getMinutes(task.end) !== 0 || getSeconds(task.end) !== 0) &&
             (
@@ -140,7 +144,9 @@ function Popup ({ toggle, task, tasks, onSave }) {
           </div>
         </div>
       </ModalContent>
+      </OutsideClickHandler>
     </Modal>
+
   )
 }
 
