@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { Heading, Subtitle, Wrapper, Button } from './styles'
 
 const handleChange = (setFunc) => (event) => setFunc(event.target.value)
 
@@ -9,8 +10,8 @@ const Login = () => {
   const history = useHistory()
 
   return (
-    <>
-      <h1>Log in</h1>
+    <Wrapper>
+      <Heading>Log in</Heading>
       <form onSubmit={async (event) => {
         event.preventDefault()
         await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
@@ -25,22 +26,22 @@ const Login = () => {
         history.push('/logged-in')
       }}>
         <div>
-          <label>
-            Username
+          <Subtitle>
+            Username: { ' ' }
             <input type='text' value={name} onChange={handleChange(setName)} />
-          </label>
+          </Subtitle>
         </div>
         <div>
-          <label>
-            Password
+          <Subtitle>
+            Password: { ' ' }
             <input type='password' value={password} onChange={handleChange(setPassword)} />
-          </label>
+          </Subtitle>
         </div>
         <div>
-          <input type='submit' value='Log in' />
+          <Button type='submit' value='Log in' />
         </div>
       </form>
-    </>
+    </Wrapper>
   )
 }
 
