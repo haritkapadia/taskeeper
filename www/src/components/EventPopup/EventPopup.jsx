@@ -1,8 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect, Fragment } from 'react'
-import { Modal, ModalContent } from './styles'
+import React, { useState, Fragment } from 'react'
+import { Modal, ModalContent, Subtitle } from './styles'
 import { MdClose } from 'react-icons/md'
+import { format, getMinutes, getHours, getSeconds, addMinutes } from 'date-fns'
+import Select from 'react-select'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import styled from 'styled-components'
 import { apiQuery } from '../../util/apiQuery'
 
@@ -13,7 +17,36 @@ const Heading = styled.input`
   width: 100%;
 `
 
+const timeOptions = getTime()
+
+const subtasks = [
+  { value: 1, label: 'Subtask1' },
+  { value: 1, label: 'Subtask2' },
+  { value: 1, label: 'Subtask3' },
+  { value: 1, label: 'Subtask4' },
+  { value: 1, label: 'Subtask5' },
+  { value: 1, label: 'Subtask6' },
+  { value: 1, label: 'Subtask7' }
+]
+
+function getTime () {
+  let i = 0
+  // eslint-disable-next-line prefer-const
+  let arr = []
+  for (i = 0; i < 48; i++) {
+    arr.push({
+      value: i,
+      label: format(addMinutes(new Date(2020, 1, 1, 0, 0, 0), i * 30), 'p')
+    })
+  }
+  return arr
+}
+
 function Popup ({ toggle, task, tasks, onSave }) {
+  const [startOption, setStartOption] = useState(null)
+  const [endOption, setEndOption] = useState(null)
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
   const [edits, setEdits] = useState({})
 
   const tree = (id) => {
@@ -52,6 +85,7 @@ function Popup ({ toggle, task, tasks, onSave }) {
     }
     obj = { ...obj, ...rest }
     onSave(await apiQuery(`/tasks/${task._id}`, obj, { method: 'PATCH' }))
+    toggle()
   }
 
   return (
@@ -62,9 +96,45 @@ function Popup ({ toggle, task, tasks, onSave }) {
         </span>
         <div>
           <Heading type='text' value={edited('title')} onChange={edit('title')} />
-          <ul>
-            {task.children.map(tree)}
-          </ul>
+          {task.children &&
+           (
+             <ul>
+               {task.children.map(tree)}
+             </ul>
+           )
+          }
+          { (getHours(task.end) !== 0 || getMinutes(task.end) !== 0 || getSeconds(task.end) !== 0) &&
+            (
+              <div>
+                <Subtitle> <span>Start Date:</span> {format(task.start, 'PPPPpppp')} </Subtitle>
+                <Subtitle> <span>End Date:</span> {format(task.end, 'PPPPpppp')} </Subtitle>
+              </div>
+            )}
+          <Subtitle>
+            Change start time:
+          </Subtitle>
+          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+          <Select
+            defaultValue={startOption}
+            onChange={setStartOption}
+            options={timeOptions}
+            loadingMessage = {'adfafd'}
+          />
+          <Subtitle>
+            Change end time:
+          </Subtitle>
+          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+          <Select
+            defaultValue={endOption}
+            onChange={setEndOption}
+            options={timeOptions}
+          />
+          <Subtitle>
+            Subtasks
+            <Select
+              options={subtasks}
+            />
+          </Subtitle>
           <div>
             <button onClick={save} disabled={Object.keys(edits).length === 0}>Save</button>
           </div>
