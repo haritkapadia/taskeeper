@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import Task from '../models/Task.js'
 
+const auth = (req, query) => query.where('user').equals(req.tasks.user)
+
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -19,9 +21,9 @@ router.use((req, res, next) => {
 router.get('/', async (req, res) => {
     try {
         const query = req.query.category ? (
-            await Task.find({ user: req.tasks.user, category: req.query.category })
+            await auth(req, Task.find({ category: req.query.category }))
         ) : (
-            await Task.find({ user: req.user })
+            await auth(req, Task.find())
         )
         res.json(query)
     } catch (err) {
@@ -32,7 +34,7 @@ router.get('/', async (req, res) => {
 //Get Task by ID
 router.get('/:id', async (req, res) => {
     try {
-        const query = await Task.findOne({ user: req.tasks.user, _id: req.params.id })
+        const query = await auth(req, Task.findById({ _id: req.params.id }))
         res.json(query)
     } catch (err) {
         res.status(404)
@@ -55,14 +57,17 @@ router.post('/', async (req, res) => {
 //Post new subtask
 router.post('/:id', async (req, res) => {
     try {
-        const parent = await Task.findById({ _id: req.params.id })
+        const parent = auth(req, await Task.findById({ _id: req.params.id }))
         const task = new Task({
             name: req.body.name,
             category: parent.category,
             parent: parent._id
         })
         await task.save()
-        await Task.updateOne({ _id: req.params.id }, { $push: { children: [task._id] } })
+        await auth(req, Task.updateOne(
+            { _id: req.params.id },
+            { $push: { children: [task._id] } }
+        ))
         res.json(task)
     } catch (err) {
         res.status(404)
@@ -73,7 +78,7 @@ router.post('/:id', async (req, res) => {
 //Update task
 router.patch("/:id", async (req, res) => {
     try {
-        const query = await Task.updateOne({ _id: req.params.id }, req.body)
+        const query = await auth(req, Task.updateOne({ _id: req.params.id }, req.body))
         res.json(query)
     } catch (err) {
         res.status(404)
@@ -84,7 +89,7 @@ router.patch("/:id", async (req, res) => {
 //Delete task by ID
 router.delete("/:id", async (req, res) => {
     try {
-        const query = await Task.deleteOne({ _id: req.params.id })
+        const query = await auth(req, Task.deleteOne({ _id: req.params.id }))
         res.json(query)
     } catch (err) {
         res.status(404)
