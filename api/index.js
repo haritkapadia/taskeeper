@@ -9,10 +9,12 @@ import authRoute from './routes/auth.js'
 
 dotenv.config()
 
-mongoose.connect(
-    process.env.DB_CONNECTION,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-).then(() => {
+mongoose.connect(process.env.DB_CONNECTION, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+}).then(() => {
     console.log("Connected to db")
 }).catch((err) => {
     console.log(err)
