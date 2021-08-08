@@ -1,40 +1,33 @@
 /* eslint-disable no-unused-vars */
 //
-import React, { useState } from 'react'
-import BigCalendar from './components/BigCalendar/BigCalendar'
-import { dateFnsLocalizer } from 'react-big-calendar'
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Home from './routes/Home'
+import Signup from './routes/Signup'
+import Login from './routes/Login'
+import Logout from './routes/Logout'
+import TaskList from './routes/TaskList'
 
-const locales = {
-  'en-US': require('date-fns/locale/en-US')
-}
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales
-})
-
-const App = () => {
-  return (
-    <div style = {{ padding: '1%' }}>
-      <div style = {{ display: 'flex', flexDirection: 'row' }}>
-        <div style = {{ height: '600px', width: '20%', backgroundColor: 'grey' }}>
-          Sidebar goes here eventually
-        </div>
-        <div style = {{ height: '600px', width: '80%' }}>
-          <BigCalendar
-            localizer = {localizer}
-          />
-        </div>
-      </div>
-    </div>
-
-  )
-}
+const App = () => (
+  <Router>
+    <Switch>
+      <Route path="/" exact>
+        <Home />
+      </Route>
+      <Route path="/logged-in">
+        <TaskList />
+      </Route>
+      <Route path="/signup">
+        <Signup />
+      </Route>
+      <Route path="/login">
+        <Login />
+      </Route>
+      <Route path="/logout">
+        <Logout />
+      </Route>
+    </Switch>
+  </Router>
+)
 
 export default App
