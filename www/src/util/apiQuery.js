@@ -1,7 +1,6 @@
 export const apiQuery = async (url, body, options) => (
   await (await fetch(`${process.env.REACT_APP_API_URL}${url}`, {
     credentials: 'include',
-    ...options,
     ...(body
       ? {
           method: 'POST',
@@ -11,6 +10,7 @@ export const apiQuery = async (url, body, options) => (
           },
           body: JSON.stringify(body)
         }
-      : {})
+      : {}),
+    ...options
   })).json()
 )

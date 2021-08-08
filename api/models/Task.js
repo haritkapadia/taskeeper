@@ -59,14 +59,4 @@ export const TaskSchema = mongoose.Schema({
     versionKey: false
 })
 
-TaskSchema.pre(['save', 'updateOne', 'findOneAndUpdate', 'findByIdAndUpdate', 'updateMany'], function (next) {
-    const history = Object.keys(baseTask).reduce((acc, el) => {
-        acc[el] = this[el]
-        return acc
-    }, {})
-    history.historyTime = Date.now()
-    this.history.push(history)
-    next()
-})
-
 export default mongoose.model('Task', TaskSchema, 'Tasks')

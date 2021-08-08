@@ -108,10 +108,10 @@ router.patch("/:id", async (req, res) => {
             const task = await auth(req, Task.findById({ _id: req.params.id }))
             updateChildren(task.toObject())
         }
-        res.json(query)
+        res.json(await auth(req, Task.findById({ _id: req.params.id })))
     } catch (err) {
-        res.status(404)
-        res.send({ error: "Could not update task" })
+        console.log(err)
+        res.status(400).json({ error: err })
     }
 })
 

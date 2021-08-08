@@ -41,7 +41,6 @@ const TaskList = () => {
 
   useEffect(async () => {
     const tasks = await apiQuery('/tasks')
-    console.log(tasks)
     setTasks(tasks)
   }, [])
 
@@ -55,19 +54,26 @@ const TaskList = () => {
     setShowEvent(true)
   }
 
+  const eventSave = (obj) => {
+    setTasks(tasks.map((task) => {
+      if (task._id === obj._id) return obj
+      return task
+    }))
+  }
+
   const onSelectSlot = async ({ start, end, action }) => {
-    console.log(start, end, action)
+    const name = window.prompt('Enter name')
     let newTask
     if (action === 'select') {
       newTask = await apiQuery('/tasks', {
-        name: 'A name',
+        name,
         datetime: true,
         startTime: start,
         duration: end.getTime() - start.getTime()
       })
     } else {
       newTask = await apiQuery('/tasks', {
-        name: 'Another name',
+        name,
         datetime: true,
         startTime: start,
         duration: 0
@@ -86,7 +92,7 @@ const TaskList = () => {
         </div>
         <div style = {{ height: '600px', width: '80%' }}>
           <>
-            {showEvent ? <EventPopup task={currentTask} tasks={tasks} toggle={closeEventPopup} /> : undefined}
+            {showEvent ? <EventPopup task={currentTask} tasks={tasks} toggle={closeEventPopup} onSave={eventSave} /> : undefined}
             <BigCalendar
               localizer={localizer}
               events={tasksToEvents(tasks)}
