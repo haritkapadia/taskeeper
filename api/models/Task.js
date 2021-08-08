@@ -1,13 +1,6 @@
 import mongoose from 'mongoose'
 
-export const TaskSchema = mongoose.Schema({
-    id: {
-        type: mongoose.ObjectId,
-    },
-    user: {
-        type: mongoose.ObjectId,
-        required: true
-    },
+const baseTask = {
     name: {
         type: String,
         required: true
@@ -40,9 +33,33 @@ export const TaskSchema = mongoose.Schema({
         type: mongoose.ObjectId,
         default: null
     }]
+}
+
+export const TaskSchema = mongoose.Schema({
+    ...baseTask,
+    id: {
+        type: mongoose.ObjectId,
+    },
+    user: {
+        type: mongoose.ObjectId,
+        required: true
+    },
+    history: {
+        type: [baseTask],
+        default: []
+    }
 }, {
     collection: 'Tasks',
     versionKey: false
+})
+
+TaskSchema.pre(['save', 'updateOne', 'findOneAndUpdate', 'findByIdAndUpdate', 'updateMany'], function (next) {
+    const history = Object.keys(baseTask).reduce((acc, el) => {
+        acc[el] = this[el]
+        return acc
+    })
+    this.history.push(history)
+    next()
 })
 
 export default mongoose.model('Task', TaskSchema, 'Tasks')
