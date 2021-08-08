@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
         )
         res.json(query)
     } catch (err) {
-        res.json({ message: err })
+        res.status(404).json({ errors: 'No tasks found' })
     }
 })
 
