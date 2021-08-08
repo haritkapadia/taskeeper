@@ -81,7 +81,6 @@ router.patch("/:id", async (req, res) => {
     }
 })
 
-<<<<<<< HEAD
 //Delete task by ID
 router.delete("/:id", async (req, res) => {
     try {
@@ -94,6 +93,3 @@ router.delete("/:id", async (req, res) => {
 })
 
 export default router
-=======
-export default router
->>>>>>> 3401810548655f0e0dcc3129c09c69336b6facfe

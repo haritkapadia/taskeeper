@@ -5,11 +5,8 @@ import MongoStore from 'connect-mongo'
 import dotenv from 'dotenv'
 import passport from './passport/setup.js'
 import tasksRoute from './routes/tasks.js'
-<<<<<<< HEAD
 import categoriesRoute from './routes/categories.js'
-=======
 import authRoute from './routes/auth.js'
->>>>>>> 3401810548655f0e0dcc3129c09c69336b6facfe
 
 dotenv.config()
 
