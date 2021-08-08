@@ -44,14 +44,16 @@ router.get('/:id', async (req, res) => {
 
 //Post new task
 router.post('/', async (req, res) => {
-    const task = new Task({
-        user: req.tasks.user,
-        name: req.body.name,
-        category: req.body.category,
-        parent: req.body.parent
-    })
-    await task.save()
-    res.json(task)
+    try {
+        const task = new Task({
+            user: req.tasks.user,
+            ...req.body
+        })
+        await task.save()
+        res.json(task)
+    } catch (err) {
+        res.status(404).json({ errors: err })
+    }
 })
 
 //Post new subtask

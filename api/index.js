@@ -7,6 +7,7 @@ import passport from './passport/setup.js'
 import tasksRoute from './routes/tasks.js'
 import categoriesRoute from './routes/categories.js'
 import authRoute from './routes/auth.js'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -25,7 +26,7 @@ const PORT = process.env.PORT || 8000
 const app = express()
 
 app.use(express.json())
-
+app.use(cors({origin: 'http://localhost:3000', credentials:true}))
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
