@@ -16,6 +16,18 @@ const TaskSchema = mongoose.Schema({
         type: String,
         default: "My Tasks"
     },
+    datetime: {
+        type: Boolean,
+        default: false
+    },
+    startTime: {
+        type: Date,
+        default: null
+    },
+    duration: {
+        type: Number,
+        default: 0
+    },
     parent: {
         type: mongoose.ObjectId,
         default: null

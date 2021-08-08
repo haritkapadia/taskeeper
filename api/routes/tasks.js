@@ -45,7 +45,7 @@ router.post('/:id', async (req, res) => {
         res.json(task)
     } catch (err) {
         res.status(404)
-        res.send({ error: "Task doesn't exist" })
+        res.send({ error: "Parent doesn't exist" })
     }
 })
 
@@ -57,6 +57,17 @@ router.patch("/:id", async (req, res) => {
     } catch (err) {
         res.status(404)
         res.send({ error: "Could not update task" })
+    }
+})
+
+//Delete task by ID
+router.delete("/:id", async (req, res) => {
+    try {
+        const query = await Task.deleteOne({ _id: req.params.id })
+        res.json(query)
+    } catch (err) {
+        res.status(404)
+        res.send({ error: "Could not delete task" })
     }
 })
 
