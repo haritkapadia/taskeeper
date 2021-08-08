@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
 //Update category
 router.patch("/:id", async (req, res) => {
     try {
-        const query = await Category.updateOne({ user: req.tasks.user, _id: req.params.id }, req.body)
+        const query = await Category.updateOne({ user: req.categories.user, _id: req.params.id }, req.body)
         res.json(query)
     } catch (err) {
         res.status(404)
@@ -60,7 +60,7 @@ router.patch("/:id", async (req, res) => {
 //Delete category by ID
 router.delete("/:id", async (req, res) => {
     try {
-        const query = await Category.deleteOne({ user: req.tasks.user, _id: req.params.id })
+        const query = await Category.deleteOne({ user: req.categories.user, _id: req.params.id })
         res.json(query)
     } catch (err) {
         res.status(404)
