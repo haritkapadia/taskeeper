@@ -1,8 +1,12 @@
 import mongoose from 'mongoose'
 
-const TaskSchema = mongoose.Schema({
+export const TaskSchema = mongoose.Schema({
     id: {
         type: mongoose.ObjectId,
+    },
+    user: {
+        type: mongoose.ObjectId,
+        required: true
     },
     name: {
         type: String,
