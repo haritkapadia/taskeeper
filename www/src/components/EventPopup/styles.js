@@ -22,3 +22,7 @@ export const ModalContent = styled.div`
 export const Heading = styled.h1`
   
 `
+
+export const Subtitle = styled.h3`
+
+`
