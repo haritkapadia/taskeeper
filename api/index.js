@@ -39,15 +39,11 @@ app.use(passport.session())
 
 app.use('/auth', authRoute)
 app.use('/tasks', tasksRoute);
-<<<<<<< HEAD
 app.use('/categories', categoriesRoute);
 app.get('/test', (_req, res, _err) => res.json({ response: 'Hello World!' }))
-=======
->>>>>>> 3401810548655f0e0dcc3129c09c69336b6facfe
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-<<<<<<< HEAD
     await mongoose.connect(process.env.DB_CONNECTION, {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -57,6 +53,3 @@ app.listen(PORT, () => {
         console.log("Connected to db")
     })
 })
-=======
-})
->>>>>>> 3401810548655f0e0dcc3129c09c69336b6facfe
