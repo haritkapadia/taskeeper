@@ -9,6 +9,7 @@ import parse from 'date-fns/parse'
 import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import { apiQuery } from '../util/apiQuery'
+import Sidebar from '../components/Sidebar/Sidebar'
 
 const locales = {
   'en-US': enUS
@@ -81,8 +82,8 @@ const TaskList = () => {
   return (
     <div style = {{ padding: '1%' }}>
       <div style = {{ display: 'flex', flexDirection: 'row' }}>
-        <div style = {{ height: '600px', width: '20%', backgroundColor: 'grey' }}>
-          Sidebar goes here eventually
+        <div style = {{ height: '600px', width: '19%', marginRight: '1%' }}>
+          <Sidebar/>
         </div>
         <div style = {{ height: '600px', width: '80%' }}>
           <>
