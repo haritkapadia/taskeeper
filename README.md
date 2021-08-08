@@ -1,4 +1,4 @@
-# personal-management-app
+# Taskeeper
 
 ## Running locally
 
