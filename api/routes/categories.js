@@ -1,6 +1,8 @@
 import express from 'express'
 import Category from '../models/Category.js'
 
+const auth = (req, query) => query.where('user').equals(req.categories.user)
+
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -16,7 +18,7 @@ router.use((req, res, next) => {
 //Get all Categories
 router.get('/', async (req, res) => {
     try {
-        const query = await Category.find({ user: req.categories.user })
+        const query = await auth(req, Category.find())
         res.json(query)
     } catch (err) {
         res.status(404)
@@ -27,7 +29,7 @@ router.get('/', async (req, res) => {
 //Get category by ID
 router.get('/:id', async (req, res) => {
     try {
-        const query = await Category.findById({ user: req.categories.user, _id: req.params.id })
+        const query = await auth(req, Category.findById({ _id: req.params.id }))
         res.json(query)
     } catch (err) {
         res.status(404)
@@ -49,7 +51,7 @@ router.post('/', async (req, res) => {
 //Update category
 router.patch("/:id", async (req, res) => {
     try {
-        const query = await Category.updateOne({ user: req.tasks.user, _id: req.params.id }, req.body)
+        const query = auth(req, await Category.updateOne({ _id: req.params.id }, req.body))
         res.json(query)
     } catch (err) {
         res.status(404)
@@ -60,7 +62,7 @@ router.patch("/:id", async (req, res) => {
 //Delete category by ID
 router.delete("/:id", async (req, res) => {
     try {
-        const query = await Category.deleteOne({ user: req.tasks.user, _id: req.params.id })
+        const query = auth(req, await Category.deleteOne({ _id: req.params.id }))
         res.json(query)
     } catch (err) {
         res.status(404)

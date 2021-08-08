@@ -61,6 +61,7 @@ router.post('/:id', async (req, res) => {
     try {
         const parent = auth(req, await Task.findById({ _id: req.params.id }))
         const task = new Task({
+            user: req.tasks.user,
             name: req.body.name,
             category: parent.category,
             parent: parent._id
