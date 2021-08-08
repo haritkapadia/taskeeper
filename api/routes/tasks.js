@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
 //Post new subtask
 router.post('/:id', async (req, res) => {
     try {
-        const parent = auth(req, await Task.findById({ _id: req.params.id }))
+        const parent = await auth(req, Task.findById({ _id: req.params.id }))
         const task = new Task({
             user: req.tasks.user,
             name: req.body.name,
@@ -76,10 +76,36 @@ router.post('/:id', async (req, res) => {
     }
 })
 
+const updateChild = async (id) => {
+    try {
+        const query = await Task.updateOne({ _id: id }, { status: true })
+        const task = await Task.findById({ _id: id })
+        updateChildren(task.toObject())
+    } catch (err) {
+        console.log("Error updating child task")
+    }
+}
+
+const updateChildren = (task) => {
+    const children = task.children
+    const len = children.length
+    if (!len) {
+        return
+    } else {
+        for (let i = 0; i < len; i++) {
+            updateChild(children[i])
+        }
+    }
+}
+
 //Update task
 router.patch("/:id", async (req, res) => {
     try {
         const query = await auth(req, Task.updateOne({ _id: req.params.id }, req.body))
+        if (req.body.status) {
+            const task = await auth(req, Task.findById({ _id: req.params.id }))
+            updateChildren(task.toObject())
+        }
         res.json(query)
     } catch (err) {
         res.status(404)
